@@ -1,58 +1,56 @@
 package com.comopt.touchpoint.entities;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-//create table source_sys ( source_system_cd VARCHAR(100), source_cd VARCHAR(20),
+//create table source_sys ( source_system_cd INT(11), source_cd VARCHAR(20),
 //source_cd_de VARCHAR(20), audit_load_id varchar(100),
 //audit_load_tm varchar(100) ) ;
 
 @Entity
-@Table(name="source_sys")
+@Table(name = "source_sys")
 public class SourceSys implements Serializable {
 
 	private static final long serialVersionUID = -2636822488929723246L;
-	
+
 	@Id
-	@Column(name="source_system_cd")
-	private String sourceSystemCd;
-	
-	@Column(name="source_cd")
+	@Column(name = "source_system_cd")
+	private Long sourceSystemCd;
+
+	@Column(name = "source_cd")
 	private String sourceCd;
-	
-	@Column(name="source_cd_de")
+
+	@Column(name = "source_cd_de")
 	private String sourceCdDe;
-	
-	
+
 	@Column(name = "audit_load_id")
 	private String auditLoadId;
 
 	@Column(name = "audit_load_tm")
 	private String auditLoadTm;
-	
-	@OneToOne(optional=false, mappedBy="sourceSytemCd")
-    public TransAudit transAudit;
-	
-	
 
-	public TransAudit getTransAudit() {
-		return transAudit;
+	@OneToMany(mappedBy = "sourceSytemCd")
+	public Set<TransAudit> transAudits;
+
+	public Set<TransAudit> getTransAudits() {
+		return transAudits;
 	}
 
-	public void setTransAudit(TransAudit transAudit) {
-		this.transAudit = transAudit;
+	public void setTransAudits(Set<TransAudit> transAudits) {
+		this.transAudits = transAudits;
 	}
 
-	public String getSourceSystemCd() {
+	public Long getSourceSystemCd() {
 		return sourceSystemCd;
 	}
 
-	public void setSourceSystemCd(String sourceSystemCd) {
+	public void setSourceSystemCd(Long sourceSystemCd) {
 		this.sourceSystemCd = sourceSystemCd;
 	}
 
@@ -87,8 +85,5 @@ public class SourceSys implements Serializable {
 	public void setAuditLoadTm(String auditLoadTm) {
 		this.auditLoadTm = auditLoadTm;
 	}
-	
-	
-	
 
 }

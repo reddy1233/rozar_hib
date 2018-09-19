@@ -1,12 +1,13 @@
 package com.comopt.touchpoint.service;
 
-import com.comopt.touchpoint.model.TouchPointActor;
+import java.util.List;
+
+import com.comopt.touchpoint.entities.TransDtlsAudit;
 
 public interface TouchPointActorService {
 	
 	
-	TouchPointActor getTouchPointActors();
-	//List<Touchpoint> getTouchpoint();
+	void updateProcessedTouchPoint(List<TransDtlsAudit> transDtlsAuditUpdateList);
 
 	
 }

@@ -8,8 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -28,7 +28,7 @@ public class TransAudit implements Serializable{
 
 	//@Column(name = "source_sytem_cd")
 	//@OneToOne @MapsId
-	@OneToOne(optional=false)
+	@ManyToOne(optional=false)
     @JoinColumn(
      name="source_system_cd", unique=true, nullable=false, updatable=false)
 	private SourceSys sourceSytemCd;

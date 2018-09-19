@@ -19,6 +19,7 @@ import com.comopt.touchpoint.entities.TransDtlsStrgPfmStatusAudit;
 import com.comopt.touchpoint.model.Initiator;
 import com.comopt.touchpoint.model.TouchPointActor;
 import com.comopt.touchpoint.model.Touchpoint;
+import com.comopt.touchpoint.service.TouchPointActorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CustomItemWriter implements ItemWriter<TransAudit> {
@@ -28,14 +29,21 @@ public class CustomItemWriter implements ItemWriter<TransAudit> {
 	@Autowired
 	private JmsTemplate jmsTemplate;
 
+	//@Autowired
+	//private JdbcTemplate jdbcTemplate;
+	
+	private List<TransDtlsAudit> transDtlsAuditUpdateList;
+	
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private TouchPointActorService touchPointActorService;
 
 	@Override
 	public void write(List<? extends TransAudit> data) throws Exception {
-		System.out.println("jdbcTemplate::" + jdbcTemplate);
-
-		List<TouchPointActor> touchPointActors = constructTocuhPointObject(data);
+		//System.out.println("jdbcTemplate::" + jdbcTemplate);
+		transDtlsAuditUpdateList = new ArrayList<>();
+		List<TouchPointActor> touchPointActors = constructTocuhPointObject(data,transDtlsAuditUpdateList);
+		
+		System.out.println("transDtlsAuditUpdateList size:::"+transDtlsAuditUpdateList.size());
 
 		System.out.println("touchPointActor::" + touchPointActors);
 
@@ -46,8 +54,11 @@ public class CustomItemWriter implements ItemWriter<TransAudit> {
 			json = mapper.writeValueAsString(touchPointActors);
 			System.out.println("json:::" + json);
 			// jmsTemplate.convertAndSend("DEV.QUEUE.1", data);
-
-			log.info("Touch Point JSON Strings send to queue " + data);
+			System.out.println("Touch Point JSON Strings send to queue " + data);
+			
+			//After writing to queue update the records...
+			touchPointActorService.updateProcessedTouchPoint(transDtlsAuditUpdateList);
+			
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -55,7 +66,7 @@ public class CustomItemWriter implements ItemWriter<TransAudit> {
 
 	}
 
-	List<TouchPointActor> constructTocuhPointObject(List<? extends TransAudit> data) {
+	List<TouchPointActor> constructTocuhPointObject(List<? extends TransAudit> data, List<TransDtlsAudit> transDtlsAuditUpdateList2) {
 		System.out.println("data:::" + data.size());
 		List<TouchPointActor> touchPointActorList = new ArrayList<>();
 		TouchPointActor tpa = null;
@@ -71,6 +82,9 @@ public class CustomItemWriter implements ItemWriter<TransAudit> {
 
 				tpa.setTouchpoint(getTouchPoints(transAudit.getTransDtlsAudits(), tpa));
 				touchPointActorList.add(tpa);
+				
+				//add to update the db records
+				transDtlsAuditUpdateList2.addAll(transAudit.getTransDtlsAudits());
 			}
 
 		}

@@ -12,20 +12,12 @@ import com.comopt.touchpoint.service.TouchPointActorService;
 
 public class CustomItemReader implements ItemReader<TouchPointActor> {
 
-	@Autowired
-	private TouchPointActorService touchPointActorService;
-
-	
-
 	@Override
 	public TouchPointActor read()
 			throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-
-		System.out.println("CustomItemReader read method called...");
-		if (AppConstant.isReadComplete) {
-			return null;
-		}
-
-		return touchPointActorService.getTouchPointActors();
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	
 }
