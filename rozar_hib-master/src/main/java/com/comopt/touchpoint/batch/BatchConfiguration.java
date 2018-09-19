@@ -1,8 +1,6 @@
 package com.comopt.touchpoint.batch;
 
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Date;
 
 import javax.persistence.EntityManagerFactory;
@@ -25,14 +23,11 @@ import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import com.comopt.touchpoint.AppConstant;
 import com.comopt.touchpoint.entities.TransAudit;
-import com.comopt.touchpoint.model.TouchPointActor;
 
 
 @Configuration
@@ -176,7 +171,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer{
     }
     
     
-   @Scheduled(cron = "*/50 * * * * *")
+   //@Scheduled(cron = "*/30 * * * * *")
     //@Scheduled(fixedRate = 60000)
    // @Scheduled(cron = "${scheduling.job.cron}")
     //@Scheduled(cron = "0 0 8 1/1 * ?") 
